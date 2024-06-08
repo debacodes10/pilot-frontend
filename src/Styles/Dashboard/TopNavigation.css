@@ -1,0 +1,23 @@
+@media (orientation: landscape) and (min-width: 768px) {
+    .tn-container {
+        border-bottom: 2px solid #D6DDEB;
+        padding: 12px 16px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .tn-add-btn {
+        padding: 12px 16px;
+        font-size: 16px;
+        font-family: "Epilogue", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 600;
+        font-style: normal;
+        font-size: 16px;
+        background: transparent;
+        border: #D6DDEB solid 2px;
+        color: black;
+        text-decoration: none;
+    }
+}

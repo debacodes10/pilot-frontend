@@ -1,0 +1,118 @@
+@media (orientation: landscape) and (min-width: 768px) {
+    .comp-form-container {
+        border: 1px solid #D6DDEB;
+        border-radius: 18px;
+        width: 700px;
+        height: fit-content;
+        padding: 12px;
+        background-color: #F9F9F9;
+    }
+
+    .comp-form-id-container {
+        display: flex;
+        flex-direction: row;
+        /* border: 1px solid black; */
+        column-gap: 48px;
+        align-items: center;
+        padding: 8px 16px;
+    }
+
+    .comp-form-lower-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 12px;
+        margin-top: 12px;
+        height: 350px;
+    }
+
+    .comp-form-title-container {
+        /* border: 1px solid black; */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .comp-form-logo-container {
+        /* border: 1px solid black; */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .comp-form-input-title {
+        font-family: "Epilogue", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 600;
+        font-style: normal;
+    }
+
+    .comp-form-input-container {
+        font-size: 16px;
+        width: 250px;
+        height: fit-content;
+        padding: 8px;
+        background: transparent;
+    }
+
+    .comp-form-input-container:focus {
+        outline: none;
+    }
+
+    /* File preview container */
+    .comp-form-file-preview {
+        margin-top: 10px;
+    }
+
+    /* File preview image */
+    .comp-form-preview-img {
+        max-width: 200px;
+        width: 200px;
+        height: auto;
+        border: 1px solid #D6DDEB;
+        border-radius: 4px;
+        margin-top: 10px;
+    }
+    
+    .comp-form-file-input {
+        padding: 16px;
+        border-radius: 12px;
+        background: transparent;
+    }
+
+    .comp-form-submit-btn-container {
+        font-size: 16px;
+        margin-top: 204px;
+        /* border: 1px solid black; */
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 16px;
+    }
+
+    .comp-form-submit-btn {
+        font-size: 16px;
+        background-color: #0175C4;
+        color: #FFFFFF;
+        padding: 12px 16px;
+        font-family: "Epilogue", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 600;
+        font-style: normal;
+        border: none;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    
+    .comp-form-submit-btn:active {
+        transform: scale(0.95); /* Scale down the button */
+        transform: translateZ(5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a slight shadow for depth */
+    }
+    
+    /* Optional: Add a hover effect for better user experience */
+    .comp-form-submit-btn:hover {
+        transform: scale(1.05); /* Scale up the button slightly on hover */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhance the shadow on hover */
+    }
+}

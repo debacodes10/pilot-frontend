@@ -1,0 +1,90 @@
+@media (orientation: landscape) and (min-width: 768px) {
+    .ca-main-container {
+        border-top: 2px solid #BBB;
+        margin: 12px 24px;
+    }
+    
+    .ca-container {
+        /* border-top: 2px solid rgb(0, 0, 0); */
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        padding: 16px;
+        column-gap: 16px;
+    }
+
+    .ca-container input:focus {
+        outline: none;
+    }
+
+    .ca-left-container {
+        border: 2px solid #BBB;
+        display: flex;
+        flex-direction: column;
+        row-gap: 12px;
+        padding: 12px;
+        max-height: 600px;
+        overflow-y: scroll;
+        border-radius: 12px;
+    
+        /* Hide scrollbar for all browsers */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* Internet Explorer 10+ */
+    }
+    
+    .ca-left-container::-webkit-scrollbar { 
+        display: none; /* WebKit browsers */
+    }
+
+    .ca-all-company-container {
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+        border: 2px solid #BBB;
+        border-radius: 8px;
+        padding: 12px 28px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .ca-container h2 {
+        text-decoration: underline;
+    }
+
+    .ca-all-id, .ca-all-text {
+        /* border: 1px solid black; */
+        padding: 0px 12px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        column-gap: 24px;
+
+    }
+
+    .ca-right-container {
+        border: 2px solid #BBB;
+        border-radius: 12px;
+        padding: 12px;
+    }
+
+    .ca-right-input-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        column-gap: 8px;
+        /* border: 1px solid black; */
+        padding: 8px 8px;
+    }
+
+    .ca-search-input {
+        border: 1px solid #BBB;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 60%;
+        font-size: 16px;
+        padding: 8px 8px;
+    }
+
+    .ca-search-result {
+        margin-top: 20px;
+      }
+}

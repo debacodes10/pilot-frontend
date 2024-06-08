@@ -1,0 +1,11 @@
+@media (orientation: landscape) and (min-width: 768px) {
+    .comp-container {
+        /* border: 1px solid black; */
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+}
