@@ -119,4 +119,37 @@
         flex-direction: row;
         align-items: center;
       }
+
+      .ca-desc-input::-webkit-scrollbar { 
+        display: none; /* WebKit browsers */
+    }
+
+    .ua-up-del-btn-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        column-gap: 24px;
+        margin: 12px 12px 0 0;
+    }
+
+    .ua-update-btn, .ua-delete-btn {
+        font-size: 16px;
+        padding: 8px 16px;
+        border-radius: 50px;
+        background: transparent;
+        font-family: "Epilogue", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 600;
+        font-style: normal;
+    }
+
+    .ua-update-btn {
+        border: 2px solid #56CDAD;
+        color: #56CDAD;
+    }
+
+    .ua-delete-btn {
+        border-color: #F50100;
+        color: #F50100;
+    }
 }

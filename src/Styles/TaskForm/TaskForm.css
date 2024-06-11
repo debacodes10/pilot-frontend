@@ -37,7 +37,7 @@
         grid-template-columns: 1fr 1fr;
         align-items: center;
         row-gap: 12px;
-        border: 1px solid black;
+        border-bottom: 1px solid #BBB;
         padding: 12px 4px;
         font-family: "Epilogue", sans-serif;
         font-optical-sizing: auto;
@@ -132,5 +132,13 @@
         flex-direction: column;
         row-gap: 12px;
         align-items: center;
+    }
+
+    .tf-select-category {
+        font-size: 18px;
+    }
+
+    .tf-select-category:focus {
+        outline: none;
     }
 }

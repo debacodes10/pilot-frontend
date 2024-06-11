@@ -4,6 +4,7 @@ import "./../../Styles/Dashboard/Dashboard.css"
 import CompanyAll from './CompanyAll'
 import UserAll from './UserAll'
 import TaskAll from './TaskAll'
+import Discussions from './Discussions'
 
 const Dashboard = () => {
   return (
@@ -12,6 +13,7 @@ const Dashboard = () => {
         <CompanyAll />
         <UserAll />
         <TaskAll />
+        <Discussions />
     </div>
   )
 }

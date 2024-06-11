@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "./../../Styles/TaskForm/TaskForm.css";
+import DateTime from 'react-datetime'
 
 const TaskForm = () => {
     const [name, setName] = useState("");
@@ -13,7 +14,8 @@ const TaskForm = () => {
     const [stipend, setStipend] = useState("");
     const [helpLinks, setHelpLinks] = useState("");
     const [nice, setNice] = useState([""]);
-    const [endDate, setEndDate] = useState("");
+    const [endDate, setEndDate] = useState(new Date());
+    const [category, setCategory] = useState("")
 
     useEffect(() => {
         if (companyId) {
@@ -44,6 +46,7 @@ const TaskForm = () => {
             taskId: taskId,
             companyId: companyId,
             companyName: companyName,
+            category: category,
             taskReq: taskReq,
             desc: desc,
             domain: domain,
@@ -135,6 +138,19 @@ const TaskForm = () => {
                     />
                 </label>
                 <label>
+                    <h4 className='tf-input-title'>Category:</h4>
+                    <select value={category} onChange={(e)=>{setCategory(e.target.value)}} required
+                        className='tf-select-category'>
+                        <option value="" disabled>Select a category</option>
+                        <option value="Development">Development</option>
+                        <option value="Data and AI">Data and AI</option>
+                        <option value="Cybersecurity and IT">Cybersecurity and IT</option>
+                        <option value="Emerging Technologies">Emerging Technologies</option>
+                        <option value="Design and UX">Design and UX</option>
+                        <option value="Marketing and Management">Marketing and Management</option>
+                    </select>
+                </label>
+                <label>
                     <h4 className='tf-input-title'>Task Requirement:</h4>
                     <textarea 
                         value={taskReq} 
@@ -174,7 +190,7 @@ const TaskForm = () => {
                     </div>
                 </label>
                 <label>
-                    <h4 className='tf-input-title'>Stipend: </h4>
+                    <h4 className='tf-input-title'>Incentive: </h4>
                     <input 
                         type="number" 
                         value={stipend} 
@@ -207,7 +223,7 @@ const TaskForm = () => {
                 <label>
                     <h4 className='tf-input-title'>End Date:</h4>
                     <input 
-                        type="date" 
+                    type='date'
                         value={endDate} 
                         onChange={(e) => setEndDate(e.target.value)} 
                         required 

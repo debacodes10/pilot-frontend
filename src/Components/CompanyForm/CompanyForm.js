@@ -8,6 +8,7 @@ const CompanyForm = () => {
 
     const [id, setId] = useState("")
     const [name, setName] = useState("")
+    const [desc, setDesc] = useState("")
     const [logo, setLogo] = useState("")
     const [preview, setPreview] = useState("")
 
@@ -34,6 +35,7 @@ const CompanyForm = () => {
 
                 const data = {
                     companyId: id,
+                    desc: desc,
                     companyName: name,
                     companyLogo: logoUrl
                 };
@@ -105,14 +107,25 @@ const CompanyForm = () => {
                         placeholder='Name'
                         className='comp-form-input-container'
                     />
-                    <div className='comp-form-submit-btn-container'>
+                </div>
+            </div>
+            <div className='comp-form-desc-container'>
+                    <h4 className='comp-form-input-title'>
+                        4. Company Description
+                    </h4>
+                    <textarea 
+                        value={desc}
+                        onChange={(e) => setDesc(e.target.value)}
+                        placeholder='Description'
+                        className='comp-form-textarea'
+                    />
+                </div>
+                <div className='comp-form-submit-btn-container'>
                         <button className='comp-form-submit-btn'
                         onClick={()=>{handleSubmit()}}>
                             <span>Submit</span>
                         </button>
                     </div>
-                </div>
-            </div>
         </div>
     )
 }

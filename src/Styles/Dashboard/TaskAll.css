@@ -27,15 +27,26 @@
         display: none; /* WebKit browsers */
     }
 
+    .ta-each-task-container {
+        border: 1px solid #EEE;
+        border-radius: 12px;
+        width: 100%;
+        padding: 8px 4px 0 0;
+        margin-top: 12px;
+    }
+
     .ta-each-task {
-        border: 1px solid #BBB;
-        border-radius: 8px;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        row-gap: 12px;
+        row-gap: 8px;
         column-gap: 12px;
         margin: 12px;
         padding: 8px 8px;
+    }
+
+    .ta-search-task-container {
+        border: 1px solid #BBB;
+        border-radius: 8px;
     }
 
     .ta-each-cat-container{
@@ -109,10 +120,7 @@
         border-bottom: 2px solid #EEE;
         height: 300px;
         padding: 0px 24px;
-        margin-bottom: 128px;
     }
-
-    
 
     .ta-bottom-left {
         /* border-top: 1px solid black; */
@@ -130,5 +138,64 @@
         align-items: center;
         column-gap: 8px;
         row-gap: 8px;
+    }
+
+    .ta-up-del-btn-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        column-gap: 24px;
+        margin: 12px 12px 0 0;
+    }
+
+    .ta-update-btn, .ua-delete-btn {
+        font-size: 16px;
+        padding: 8px 16px;
+        border-radius: 50px;
+        background: transparent;
+        font-family: "Epilogue", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 600;
+        font-style: normal;
+    }
+
+    .ta-update-btn {
+        border: 2px solid #56CDAD;
+        color: #56CDAD;
+    }
+
+    .ta-delete-btn {
+        border-color: #F50100;
+        color: #F50100;
+    }
+
+    .ta-update-textarea {
+        width: 95%;
+        resize: none;
+        margin: 4px;
+        border: none;
+        font-size: 14px;
+        height: 100px;
+        overflow-y: scroll;
+        /* Hide scrollbar for all browsers */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* Internet Explorer 10+ */
+    }
+
+    .ta-update-textarea:focus {
+        outline: none;
+    }
+
+    .ta-update-textarea::-webkit-scrollbar { 
+        display: none; /* WebKit browsers */
+    }
+
+    .ta-update-input {
+        font-size: 16px;
+        width: 95%;
+    }
+
+    .ta-update-input:focus {
+        outline: none;
     }
 }

@@ -87,4 +87,55 @@
     .ca-search-result {
         margin-top: 20px;
       }
+
+      .ca-desc-text {
+        padding: 0px 12px;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        column-gap: 24px;
+      }
+
+      .ca-desc-input {
+        border-right: 2px solid #EEE;
+        overflow-y: scroll;
+        height: 200px;
+        padding: 4px 8px;
+      /* Hide scrollbar for all browsers */
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* Internet Explorer 10+ */
+    }
+    
+    .ca-desc-input::-webkit-scrollbar { 
+        display: none; /* WebKit browsers */
+    }
+
+    .ca-up-del-btn-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        column-gap: 24px;
+    }
+
+    .ca-update-btn, .ca-delete-btn {
+        font-size: 16px;
+        padding: 8px 16px;
+        border-radius: 50px;
+        background: transparent;
+        font-family: "Epilogue", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 600;
+        font-style: normal;
+    }
+
+    .ca-update-btn {
+        border: 2px solid #56CDAD;
+        color: #56CDAD;
+    }
+
+    .ca-delete-btn {
+        border-color: #F50100;
+        color: #F50100;
+    }
+
 }
