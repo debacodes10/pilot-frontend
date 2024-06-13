@@ -5,14 +5,13 @@ import { FaSearch } from "react-icons/fa";
 const Discussions = () => {
     const [searchDiscussions, setSearchDiscussions] = useState("");
     const [taskData, setTaskData] = useState(null);
-    const [newAnswers, setNewAnswers] = useState({});
+    const [editModes, setEditModes] = useState({});
 
     async function handleDiscussionSearch() {
         try {
             const response = await fetch(`http://localhost:3005/api/tasks/${searchDiscussions}`);
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 setTaskData(data);
             } else {
                 console.error('Error fetching task data');
@@ -22,36 +21,36 @@ const Discussions = () => {
         }
     }
 
-    const handleAnswerChange = (questionIndex, value) => {
-        setNewAnswers(prev => ({
+    const handleAnswerChange = (questionIndex, value, field) => {
+        setTaskData(prev => ({
             ...prev,
-            [questionIndex]: value
+            discussions: prev.discussions.map((discussion, index) =>
+                index === questionIndex ? { ...discussion, [field]: value } : discussion
+            )
         }));
     };
 
     const handleAnswerSubmit = async (questionIndex) => {
-        const answer = newAnswers[questionIndex];
-        if (!answer) return;
-    
+        const discussion = taskData.discussions[questionIndex];
+        if (!discussion.answer && !discussion.question) return;
+
         try {
             const response = await fetch(`http://localhost:3005/api/tasks/${taskData.taskId}/discussions`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ discussionIndex: questionIndex, answer }),
+                body: JSON.stringify({ 
+                    discussionIndex: questionIndex, 
+                    question: discussion.question,
+                    answer: discussion.answer 
+                }),
             });
-    
+
             if (response.ok) {
-                setTaskData(prev => ({
+                setEditModes(prev => ({
                     ...prev,
-                    discussions: prev.discussions.map((discussion, index) =>
-                        index === questionIndex ? { ...discussion, answer } : discussion
-                    )
-                }));
-                setNewAnswers(prev => ({
-                    ...prev,
-                    [questionIndex]: ""
+                    [questionIndex]: false
                 }));
             } else {
                 console.error('Error updating answer');
@@ -60,14 +59,32 @@ const Discussions = () => {
             console.error('Error:', error);
         }
     };
-    
+
+    const handleDeleteDiscussion = async (questionIndex) => {
+        try {
+            const response = await fetch(`http://localhost:3005/api/tasks/${taskData.taskId}/discussions/${questionIndex}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                setTaskData(prev => ({
+                    ...prev,
+                    discussions: prev.discussions.filter((_, index) => index !== questionIndex)
+                }));
+            } else {
+                console.error('Error deleting discussion');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     return (
         <div className='d-container'>
             <h2 style={{ textAlign: "center" }}><u>Discussions Section</u></h2>
             <div className='d-container-main'>
                 <div className='d-left-container'>
-                    <h2 style={{ paddingLeft: 8, }}>Search Discussions by Task ID</h2>
+                    <h2 style={{ paddingLeft: 8 }}>Search Discussions by Task ID</h2>
                     <div className='d-taskid-container'>
                         <span style={{ fontWeight: '600' }}>Task ID : </span>
                         <input
@@ -82,20 +99,43 @@ const Discussions = () => {
                 <div className='d-right-container'>
                     {taskData && taskData.discussions.map((discussion, index) => (
                         <div key={index} className='d-item-container'>
-                            <p><strong>Username:</strong> {discussion.username}</p>
-                            <p><strong>Question:</strong> {discussion.question}</p>
-                            {discussion.answer ? (
-                                <p><strong>Answer:</strong> {discussion.answer}</p>
-                            ) : (
-                                <div>
+                            <div className='ua-up-del-btn-container'>
+                                {editModes[index] ? (
+                                    <>
+                                        <button onClick={() => handleAnswerSubmit(index)} className='d-update-btn'>Save</button>
+                                        <button onClick={() => setEditModes(prev => ({ ...prev, [index]: false }))} className='d-delete-btn'>Cancel</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <button onClick={() => setEditModes(prev => ({ ...prev, [index]: true }))} className='d-update-btn'>Update</button>
+                                        <button onClick={() => handleDeleteDiscussion(index)} className='d-delete-btn'>Delete</button>
+                                    </>
+                                )}
+                            </div>
+                            {editModes[index] ? (
+                                <>
+                                    <p><strong>Username:</strong> {discussion.username}</p>
                                     <input
                                         type="text"
-                                        value={newAnswers[index] || ""}
-                                        onChange={(e) => handleAnswerChange(index, e.target.value)}
-                                        placeholder="Provide an answer"
+                                        value={discussion.question}
+                                        onChange={(e) => handleAnswerChange(index, e.target.value, 'question')}
+                                        placeholder="Update question"
+                                        className='d-change-input'
                                     />
-                                    <button onClick={() => handleAnswerSubmit(index)}>Submit Answer</button>
-                                </div>
+                                    <input
+                                        type="text"
+                                        value={discussion.answer}
+                                        onChange={(e) => handleAnswerChange(index, e.target.value, 'answer')}
+                                        placeholder="Update answer"
+                                        className='d-change-input'
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <p><strong>Username:</strong> {discussion.username}</p>
+                                    <p><strong>Question:</strong> {discussion.question}</p>
+                                    <p><strong>Answer:</strong> {discussion.answer}</p>
+                                </>
                             )}
                         </div>
                     ))}

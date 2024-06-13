@@ -49,4 +49,42 @@
         margin: 24px;
         border-radius: 10px;
     }
+
+    .d-up-del-btn-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        column-gap: 24px;
+        margin: 12px 12px 0 0;
+        border: 1px solid black;
+    }
+
+    .d-update-btn, .d-delete-btn {
+        font-size: 16px;
+        padding: 8px 16px;
+        border-radius: 50px;
+        background: transparent;
+        font-family: "Epilogue", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 600;
+        font-style: normal;
+    }
+
+    .d-update-btn {
+        border: 2px solid #56CDAD;
+        color: #56CDAD;
+    }
+
+    .d-delete-btn {
+        border-color: #F50100;
+        color: #F50100;
+    }
+
+    .d-change-input {
+        border: 1px solid #BBB;
+        margin: 8px 0px;
+        padding: 4px 12px;
+        font-size: 16px;
+        width: fit-content;
+    }
 }
