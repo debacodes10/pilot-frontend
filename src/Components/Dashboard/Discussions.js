@@ -33,6 +33,7 @@ const Discussions = () => {
     const handleAnswerSubmit = async (questionIndex) => {
         const discussion = taskData.discussions[questionIndex];
         if (!discussion.answer && !discussion.question) return;
+        console.log(discussion);
 
         try {
             const response = await fetch(`http://localhost:3005/api/tasks/${taskData.taskId}/discussions`, {
@@ -115,20 +116,26 @@ const Discussions = () => {
                             {editModes[index] ? (
                                 <>
                                     <p><strong>Username:</strong> {discussion.username}</p>
-                                    <input
-                                        type="text"
-                                        value={discussion.question}
-                                        onChange={(e) => handleAnswerChange(index, e.target.value, 'question')}
-                                        placeholder="Update question"
-                                        className='d-change-input'
-                                    />
-                                    <input
-                                        type="text"
-                                        value={discussion.answer}
-                                        onChange={(e) => handleAnswerChange(index, e.target.value, 'answer')}
-                                        placeholder="Update answer"
-                                        className='d-change-input'
-                                    />
+                                    <div>
+                                        <span style={{marginRight: 8}}><strong>Question: </strong></span>
+                                        <input
+                                            type="text"
+                                            value={discussion.question}
+                                            onChange={(e) => handleAnswerChange(index, e.target.value, 'question')}
+                                            placeholder="Update question"
+                                            className='d-change-input'
+                                        />
+                                    </div>
+                                    <div>
+                                        <span style={{marginRight: 8}}><strong>Answer: </strong></span>
+                                        <input
+                                            type="text"
+                                            value={discussion.answer}
+                                            onChange={(e) => handleAnswerChange(index, e.target.value, 'answer')}
+                                            placeholder="Update answer"
+                                            className='d-change-input'
+                                        />
+                                    </div>
                                 </>
                             ) : (
                                 <>

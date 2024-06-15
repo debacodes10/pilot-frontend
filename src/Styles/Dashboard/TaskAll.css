@@ -112,21 +112,6 @@
         display: none; /* WebKit browsers */
     }
 
-    .ta-bottom {
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        margin-top: 48px;
-        border-top: 2px solid #EEE;
-        border-bottom: 2px solid #EEE;
-        height: 300px;
-        padding: 0px 24px;
-    }
-
-    .ta-bottom-left {
-        /* border-top: 1px solid black; */
-        border-right: 2px solid #EEE;
-    }
-
     .ta-text-bullet-container {
         display: flex;
         flex-direction: column;

@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import "./../../Styles/Dashboard/TaskAll.css";
 import { FaSearch } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
+import Applicant from './Applicant';
 
 const TaskAll = () => {
   const [tasks, setTasks] = useState([]);
   const [searchTask, setSearchTask] = useState("");
   const [searchResult, setSearchResult] = useState(null);
-  const [searchApplications, setSearchApplications] = useState("");
-  const [taskApplications, setTaskApplications] = useState([]);
-
   const [editMode, setEditMode] = useState(false);
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
@@ -17,11 +15,6 @@ const TaskAll = () => {
   const [taskReq, setTaskReq] = useState("");
   const [stipend, setStipend] = useState(0);
   const [endDate, setEndDate] = useState(new Date());
-
-  const [edit2, setEdit2] = useState(false)
-  const [userName, setUserName] = useState("")
-  const [email, setEmail] = useState("")
-  const [driveLink, setDriveLink] = useState("")
 
   useEffect(() => {
     fetch('http://localhost:3005/api/tasks')
@@ -52,21 +45,6 @@ const TaskAll = () => {
           console.error('Error fetching task:', error);
           setSearchResult(null);
           alert(error.message);
-        });
-    }
-  };
-
-  const handleApplicationSearch = () => {
-    if (searchApplications.trim() !== "") {
-      fetch(`http://localhost:3005/api/applications`)
-        .then(response => response.json())
-        .then(data => {
-          const filteredApplications = data.filter(app => app.taskId === searchApplications);
-          setTaskApplications(filteredApplications);
-        })
-        .catch(error => {
-          console.error('Error fetching applications:', error);
-          setTaskApplications([]);
         });
     }
   };
@@ -114,44 +92,6 @@ const TaskAll = () => {
       })
       .catch(error => console.error('Error deleting task:', error));
     window.location.reload();
-  };
-
-  const updateApplication = (applicationId) => {
-    const body = {
-      studentName: userName,
-      studentEmail: email,
-      driveLink: driveLink,
-    };
-  
-    fetch(`http://localhost:3005/api/applications/${applicationId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Handle success, maybe update state if necessary
-        console.log('Application updated:', data);
-        setEdit2(false); // Reset edit mode
-      })
-      .catch(error => console.error('Error updating application:', error));
-  };
-
-  const deleteApplication = (applicationId) => {
-    fetch(`http://localhost:3005/api/applications/${applicationId}`, {
-      method: 'DELETE',
-    })
-      .then(response => {
-        if (response.ok) {
-          console.log('Application deleted');
-          // Handle successful deletion, maybe update state if necessary
-        } else {
-          console.error('Error deleting application');
-        }
-      })
-      .catch(error => console.error('Error deleting application:', error));
   };
 
   return (
@@ -367,80 +307,7 @@ const TaskAll = () => {
           ) : null}
         </div>
       </div>
-      <div className='ta-bottom'>
-        <div className="ta-bottom-left">
-            <h2 style={{ paddingLeft: 8, }}>Search Applications by Task ID</h2>
-            <div className='ta-taskid-input-container'>
-                <span style={{fontWeight: '600'}}>Task ID : </span>
-                <input
-                value={searchApplications}
-                onChange={(e) => setSearchApplications(e.target.value)}
-                className='ta-search-input'
-                placeholder='Enter Task ID'
-                />
-                <FaSearch size={20} onClick={handleApplicationSearch} style={{ cursor: 'pointer' }} color='#607274' />
-            </div>
-          </div>
-          {taskApplications.length > 0 && (
-            <div className='ta-app-count-container'>
-              <h4>Total Applicants: {taskApplications.length}</h4>
-              {taskApplications.map(taskApplicant => (
-                <div className='ta-each-task-container'>
-                  <div className='ua-up-del-btn-container'>
-                    {edit2 ? (
-                      <>
-                        <button onClick={() => updateApplication(searchResult.taskId)} className='ua-update-btn'>Save</button>
-                        <button onClick={() => setEdit2(false)} className='ua-delete-btn'>Cancel</button>
-                      </>
-                    ) : (
-                      <>
-                        <button onClick={() => setEdit2(true)} className='ua-update-btn'>Update</button>
-                        <button onClick={() => deleteApplication(searchResult.taskId)} className='ua-delete-btn'>Delete</button>
-                      </>
-                    )}
-                  </div>
-                  <div key={taskApplicant._id} className='ta-each-task'>
-                  <div className='ta-each-cat-container'>
-                    <h4>Name:</h4>
-                    {edit2 ? 
-                    <input value={userName} onChange={(e)=>setUserName(e.target.value)} className='ta-update-input'/>
-                    :
-                      <span>{taskApplicant.studentName}</span>
-                    }
-                  </div>
-                  <div className='ta-each-cat-container'>
-                    <h4>Phone:</h4>
-                    <span>{taskApplicant.studentNumber}</span>
-                  </div>
-                  <div className='ta-each-cat-container'>
-                    <h4>Email:</h4>
-                    {edit2 ? 
-                    <input value={email} onChange={(e)=>setEmail(e.target.value)} className='ta-update-input'/>
-                    :
-                    <span>{taskApplicant.studentEmail}</span>
-                    }
-                  </div>
-                  <div className='ta-each-cat-container'>
-                    <h4>Drive Link:</h4>
-                    {edit2 ? 
-                    <input value={driveLink} onChange={(e)=>setDriveLink(e.target.value)} className='ta-update-input'/>
-                    :
-                    <span>{taskApplicant.driveLink}</span>
-                    }
-                  </div>
-                  <div className='ta-each-cat-container'>
-                  <h4>Domains:</h4>
-                  <div className='ta-text-long'>
-                    <span>{taskApplicant.domain}</span>
-                  </div>
-                </div>
-                </div>
-                  
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+      <Applicant />
     </div>
   );
 };

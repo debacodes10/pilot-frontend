@@ -87,4 +87,8 @@
         font-size: 16px;
         width: fit-content;
     }
+
+    .d-change-input:focus {
+        outline: none;
+    }
 }
