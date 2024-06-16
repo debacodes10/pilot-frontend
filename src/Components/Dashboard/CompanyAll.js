@@ -11,7 +11,10 @@ const CompanyAll = () => {
   const [companyName, setCompanyName] = useState("");
   const [companyLogo, setCompanyLogo] = useState("");
   const [companyDescription, setCompanyDescription] = useState("");
+  const [manager, setManager] = useState("");
+  const [managerSign, setManagerSign] = useState("");
   const [logoPreview, setLogoPreview] = useState(null);
+  const [signPreview, setSignPreview] = useState(null);
 
   useEffect(() => {
     fetch('http://localhost:3005/api/company-profiles')
@@ -33,7 +36,10 @@ const CompanyAll = () => {
             setCompanyName(data.companyName);
             setCompanyDescription(data.desc);
             setCompanyLogo(data.companyLogo);
+            setManager(data.manager);
+            setManagerSign(data.managerSign);
             setLogoPreview(data.companyLogo);
+            setSignPreview(data.managerSign);
           }
         })
         .catch(error => {
@@ -47,9 +53,11 @@ const CompanyAll = () => {
     const body = {
       companyLogo: logoPreview,
       companyName: companyName,
-      desc: companyDescription
+      desc: companyDescription,
+      manager: manager,
+      managerSign: signPreview
     };
-  
+
     fetch(`http://localhost:3005/api/company-profiles/${companyId}`, {
       method: 'PUT',
       headers: {
@@ -61,9 +69,9 @@ const CompanyAll = () => {
       .then(data => {
         setCompanies(companies.map(company => company.companyId === companyId ? data : company));
         setEditMode(false);
-        setSearchResult(null); // Clear the search result to trigger re-render
-        setSearchCompany(''); // Clear the search input field
-        window.location.reload()
+        setSearchResult(null);
+        setSearchCompany('');
+        window.location.reload();
       })
       .catch(error => console.error('Error updating company:', error));
   };
@@ -75,7 +83,7 @@ const CompanyAll = () => {
       .then(response => {
         if (response.ok) {
           setCompanies(companies.filter(company => company.companyId !== companyId));
-          window.location.reload()
+          window.location.reload();
         } else {
           console.error('Error deleting company');
         }
@@ -94,6 +102,17 @@ const CompanyAll = () => {
     }
   };
 
+  const handleSignChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSignPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className='ca-main-container'>
       <h2 style={{ textAlign: "center" }}><u>Company Section</u></h2>
@@ -104,6 +123,7 @@ const CompanyAll = () => {
             <div key={company._id} className='ca-all-company-container'>
               <div className='ca-all-half'>
                 <img src={company.companyLogo} width={100} height={100} alt={company.companyName} />
+                {/* <img src={company.managerSign} width={100} height={100} alt={company.companyName} /> */}
               </div>
               <div className='ca-all-half'>
                 <div className='ca-all-id'>
@@ -184,6 +204,25 @@ const CompanyAll = () => {
                       />
                     ) : (
                       <span className='ca-desc-input'>{searchResult.desc}</span>
+                    )}
+                  </div>
+                  <div className='ca-all-text'>
+                    <h4>Manager:</h4>
+                    {editMode ? (
+                      <input
+                        type="text"
+                        value={manager}
+                        onChange={(e) => setManager(e.target.value)}
+                      />
+                    ) : (
+                      <span>{searchResult.manager}</span>
+                    )}
+                  </div>
+                  <div className='ca-all-half'>
+                    <h4>Manager Signature:</h4>
+                    <img loading="lazy" src={signPreview} width={100} height={100} alt="Manager Sign" />
+                    {editMode && (
+                      <input type="file" onChange={handleSignChange} />
                     )}
                   </div>
                 </div>
