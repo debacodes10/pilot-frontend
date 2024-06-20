@@ -123,7 +123,7 @@ const CompanyAll = () => {
             <div key={company._id} className='ca-all-company-container'>
               <div className='ca-all-half'>
                 <img src={company.companyLogo} width={100} height={100} alt={company.companyName} />
-                {/* <img src={company.managerSign} width={100} height={100} alt={company.companyName} /> */}
+                <img src={company.managerSign} width={100} height={100} alt={company.companyName} />
               </div>
               <div className='ca-all-half'>
                 <div className='ca-all-id'>
@@ -137,6 +137,10 @@ const CompanyAll = () => {
                 <div className='ca-desc-text'>
                   <h4>Company Description:</h4>
                   <span className='ca-desc-input'>{company.desc}</span>
+                </div>
+                <div className='ca-all-text'>
+                  <h4>Manager:</h4>
+                  <span className='ca-desc-input'>{company.manager}</span>
                 </div>
               </div>
             </div>
