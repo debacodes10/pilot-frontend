@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import "./../../Styles/Dashboard/Applicant.css";
 import { FaSearch } from "react-icons/fa";
+import { FaDownload } from "react-icons/fa6";
+import FileSaver from 'file-saver';
 
 const Applicant = () => {
     const [searchApplications, setSearchApplications] = useState("");
@@ -72,6 +74,13 @@ const Applicant = () => {
         setDriveLink(applicant.driveLink);
     };
 
+    const handleDownload = () => {
+        const headers = "Object ID,Drive Link\n";
+        const csvContent = taskApplications.map(taskApplicant => `${taskApplicant._id},${taskApplicant.driveLink}`).join("\n");
+        const blob = new Blob([headers + csvContent], { type: 'text/csv;charset=utf-8;' });
+        FileSaver.saveAs(blob, 'task_applications.csv');
+    };
+
     return (
         <div className='a-bottom'>
             <div className="a-bottom-left">
@@ -89,7 +98,12 @@ const Applicant = () => {
             </div>
             {taskApplications.length > 0 && (
                 <div className='a-app-count-container'>
-                    <h4>Total Applicants: {taskApplications.length}</h4>
+                    <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                        <h4>Total Applicants: {taskApplications.length}</h4>
+                        <button className='a-download-btn' onClick={handleDownload}>
+                            <FaDownload size={20} color='#55AD9B'/>
+                        </button>
+                    </div>
                     {taskApplications.map(taskApplicant => (
                         <div key={taskApplicant._id} className='a-each-task-container'>
                             <div className='a-up-del-btn-container'>

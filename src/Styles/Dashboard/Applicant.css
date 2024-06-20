@@ -126,4 +126,13 @@
     .a-text-long::-webkit-scrollbar { 
         display: none; /* WebKit browsers */
     }
+    
+    .a-download-btn {
+        height: fit-content;
+        width: fit-content;
+        padding: 8px 12px;
+        background: transparent;
+        border: 2px solid #55AD9B;
+        border-radius: 8px;
+    }
 }

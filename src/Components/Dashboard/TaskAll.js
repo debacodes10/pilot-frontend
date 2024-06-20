@@ -189,7 +189,7 @@ const TaskAll = () => {
           </div>
           {searchResult ? (
             <div className='ta-search-task-container'>
-              <div className='ua-up-del-btn-container'>
+              <div className='ta-up-del-btn-container'>
                     {editMode ? (
                       <>
                         <button onClick={() => updateTaskDetails(searchResult.taskId)} className='ua-update-btn'>Save</button>
