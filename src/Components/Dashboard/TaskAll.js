@@ -15,7 +15,8 @@ const TaskAll = () => {
   const [taskReq, setTaskReq] = useState("");
   const [stipend, setStipend] = useState(0);
   const [endDate, setEndDate] = useState(new Date());
-
+  const [helpLinks, setHelpLinks] = useState([]);
+  
   useEffect(() => {
     fetch('http://localhost:3005/api/tasks')
       .then(response => response.json())
@@ -40,6 +41,7 @@ const TaskAll = () => {
           setTaskReq(data.taskReq);
           setStipend(data.stipend);
           setEndDate(data.endDate);
+          setHelpLinks(data.helpLinks);  // Set the help links array
         })
         .catch(error => {
           console.error('Error fetching task:', error);
@@ -57,6 +59,7 @@ const TaskAll = () => {
       taskReq: taskReq,
       stipend: stipend,
       endDate: endDate,
+      helpLinks: helpLinks,
     };
 
     fetch(`http://localhost:3005/api/tasks/${taskId}`, {
@@ -72,19 +75,16 @@ const TaskAll = () => {
         setEditMode(false);
         setSearchResult(null); // Clear the search result to trigger re-render
         setSearchTask(''); // Clear the search input field
-        // window.location.reload(); // Refresh the page to reflect changes
       })
       .catch(error => console.error('Error updating task:', error));
   };
 
   const deleteTask = (taskId) => {
-    console.log(taskId);
     fetch(`http://localhost:3005/api/tasks/${taskId}`, {
       method: 'DELETE',
     })
       .then(response => {
         if (response.ok) {
-          console.log('Task deleted');
           setTasks(tasks.filter(task => task.taskId !== taskId));
         } else {
           console.error('Error deleting task');
@@ -92,6 +92,21 @@ const TaskAll = () => {
       })
       .catch(error => console.error('Error deleting task:', error));
     window.location.reload();
+  };
+
+  const handleHelpLinkChange = (index, value) => {
+    const newHelpLinks = [...helpLinks];
+    newHelpLinks[index] = value;
+    setHelpLinks(newHelpLinks);
+  };
+
+  const addHelpLink = () => {
+    setHelpLinks([...helpLinks, ""]);
+  };
+
+  const removeHelpLink = (index) => {
+    const newHelpLinks = helpLinks.filter((_, i) => i !== index);
+    setHelpLinks(newHelpLinks);
   };
 
   return (
@@ -152,8 +167,13 @@ const TaskAll = () => {
                 </div>
                 <div className='ta-each-cat-container-long'>
                   <h4>Help Links:</h4>
-                  <div className='ta-text-long'>
-                    <span>{task.helpLinks}</span>
+                  <div className='ta-text-bullet-container'>
+                    {task.helpLinks.map((link, index) => (
+                      <div key={index} className='ta-text-bullet-each'>
+                        <GoDotFill size={20}/>
+                        <span className='skill-item'>{link}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
                 <div className='ta-each-cat-container-long'>
@@ -176,7 +196,7 @@ const TaskAll = () => {
           ))}
         </div>
         <div className='ta-half'>
-          <h2 style={{ paddingLeft: 8, }}>Search by Task ID</h2>
+          <h2 style={{ paddingLeft: 8 }}>Search by Task ID</h2>
           <div className='ta-taskid-input-container'>
             <span style={{fontWeight: '600'}}>Task ID : </span>
             <input
@@ -187,83 +207,81 @@ const TaskAll = () => {
             />
             <FaSearch size={20} onClick={handleSearch} style={{ cursor: 'pointer' }} color='#607274' />
           </div>
-          {searchResult ? (
+          {searchResult && (
             <div className='ta-search-task-container'>
               <div className='ta-up-del-btn-container'>
+                {editMode ? (
+                  <>
+                    <button onClick={() => updateTaskDetails(searchResult.taskId)} className='ua-update-btn'>Save</button>
+                    <button onClick={() => setEditMode(false)} className='ua-delete-btn'>Cancel</button>
+                  </>
+                ) : (
+                  <>
+                    <button onClick={() => setEditMode(true)} className='ua-update-btn'>Update</button>
+                    <button onClick={() => deleteTask(searchResult.taskId)} className='ua-delete-btn'>Delete</button>
+                  </>
+                )}
+              </div>
+              <div className='ta-each-task'>
+                <div className='ta-each-cat-container'>
+                  <h4>Name:</h4>
+                  {editMode ? (
+                    <input value={taskName} onChange={(e) => setTaskName(e.target.value)} className='ta-update-input'/>
+                  ) : (
+                    <span>{searchResult.name}</span>
+                  )}
+                </div>
+                <div className='ta-each-cat-container'>
+                  <h4>Task ID:</h4>
+                  <span>{searchResult.taskId}</span>
+                </div>
+                <div className='ta-each-cat-container'>
+                  <h4>Company ID:</h4>
+                  <span>{searchResult.companyId}</span>
+                </div>
+                <div className='ta-each-cat-container'>
+                  <h4>Company Name:</h4>
+                  <span>{searchResult.companyName}</span>
+                </div>
+                <div className='ta-each-cat-container-long'>
+                  <h4>Task Requirements:</h4>
+                  <div className='ta-text-long'>
                     {editMode ? (
-                      <>
-                        <button onClick={() => updateTaskDetails(searchResult.taskId)} className='ua-update-btn'>Save</button>
-                        <button onClick={() => setEditMode(false)} className='ua-delete-btn'>Cancel</button>
-                      </>
+                      <textarea value={taskReq} onChange={(e) => setTaskReq(e.target.value)} className='ta-update-textarea'/>
                     ) : (
-                      <>
-                        <button onClick={() => setEditMode(true)} className='ua-update-btn'>Update</button>
-                        <button onClick={() => deleteTask(searchResult.taskId)} className='ua-delete-btn'>Delete</button>
-                      </>
+                      <span>{searchResult.taskReq}</span>
                     )}
                   </div>
-                  <div className='ta-each-task'>
-              <div className='ta-each-cat-container'>
-                <h4>Name:</h4>
-                {editMode? 
-                <input value={taskName} onChange={(e) => setTaskName(e.target.value)} className='ta-update-input'/>
-                : 
-                <span>{searchResult.name}</span>
-                }
-              </div>
-              <div className='ta-each-cat-container'>
-                <h4>Task ID:</h4>
-                <span>{searchResult.taskId}</span>
-              </div>
-              <div className='ta-each-cat-container'>
-                <h4>Company ID:</h4>
-                <span>{searchResult.companyId}</span>
-              </div>
-              <div className='ta-each-cat-container'>
-                <h4>Company Name:</h4>
-                <span>{searchResult.companyName}</span>
-              </div>
-              <div className='ta-each-cat-container-long'>
-                <h4>Task Requirements:</h4>
-                <div className='ta-text-long'>
-                {editMode? 
-                <textarea value={taskReq} onChange={(e) => setTaskReq(e.target.value)} 
-                className='ta-update-textarea'/>
-                : 
-                <span>{searchResult.taskReq}</span>
-                }
                 </div>
-              </div>
-              <div className='ta-each-cat-container-long'>
-                <h4>Description:</h4>
-                <div className='ta-text-long'>
-                {editMode? 
-                <textarea value={taskDescription} onChange={(e) => setTaskDescription(e.target.value)}
-                className='ta-update-textarea' />
-                : 
-                <span>{searchResult.desc}</span>
-                }
+                <div className='ta-each-cat-container-long'>
+                  <h4>Description:</h4>
+                  <div className='ta-text-long'>
+                    {editMode ? (
+                      <textarea value={taskDescription} onChange={(e) => setTaskDescription(e.target.value)} className='ta-update-textarea' />
+                    ) : (
+                      <span>{searchResult.desc}</span>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className='ta-each-cat-container'>
-                <h4>Domain:</h4>
-                {editMode? 
-                <input value={taskDomain} onChange={(e) => setTaskDomain(e.target.value)} className='ta-update-input'/>
-                : 
-                <span>{searchResult.domain}</span>
-                }
-              </div>
-              <div className='ta-each-cat-container'>
-                <h4>Stipend:</h4>
-                {editMode? 
-                <input value={stipend} onChange={(e) => setStipend(e.target.value)} className='ta-update-input' type='number'/>
-                : 
-                <span>{searchResult.stipend}</span>
-                }
-              </div>
-              <div className='ta-each-cat-container-long'>
+                <div className='ta-each-cat-container'>
+                  <h4>Domain:</h4>
+                  {editMode ? (
+                    <input value={taskDomain} onChange={(e) => setTaskDomain(e.target.value)} className='ta-update-input'/>
+                  ) : (
+                    <span>{searchResult.domain}</span>
+                  )}
+                </div>
+                <div className='ta-each-cat-container'>
+                  <h4>Stipend:</h4>
+                  {editMode ? (
+                    <input value={stipend} onChange={(e) => setStipend(e.target.value)} className='ta-update-input' type='number'/>
+                  ) : (
+                    <span>{searchResult.stipend}</span>
+                  )}
+                </div>
+                <div className='ta-each-cat-container-long'>
                   <h4>Skill:</h4>
-                  <div className='ta-text-buller-container'>
+                  <div className='ta-text-bullet-container'>
                     {searchResult.skill.map((skill, index) => (
                       <div className='ta-text-bullet-each' key={index}>
                         <GoDotFill size={20}/>
@@ -272,39 +290,55 @@ const TaskAll = () => {
                     ))}
                   </div>
                 </div>
-              <div className='ta-each-cat-container-long'>
-                <h4>Help Links:</h4>
-                <div className='ta-text-long'>
-                {editMode? 
-                <input value={searchResult.helpLinks} onChange={(e) => setSearchResult({...searchResult, helpLinks: e.target.value})} />
-                : 
-                <span>{searchResult.helpLinks}</span>
-                }
+                <div className='ta-each-cat-container-long'>
+                  <h4>Help Links:</h4>
+                  <div className='ta-text-bullet-container'>
+                    {editMode ? (
+                      <>
+                        {helpLinks.map((link, index) => (
+                          <div key={index} className='ta-text-long'>
+                            <input
+                              value={link}
+                              onChange={(e) => handleHelpLinkChange(index, e.target.value)}
+                              className='ta-update-input'
+                            />
+                            <button onClick={() => removeHelpLink(index)} className='ua-delete-btn'>Remove</button>
+                          </div>
+                        ))}
+                        <button onClick={addHelpLink} className='ua-update-btn'>Add Link</button>
+                      </>
+                    ) : (
+                      searchResult.helpLinks.map((link, index) => (
+                        <div key={index} className='ta-text-bullet-each'>
+                          <GoDotFill size={20}/>
+                          <span className='skill-item'>{link}</span>
+                      </div>
+                      ))
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className='ta-each-cat-container-long'>
-                <h4>Nice-To-Haves:</h4>
-                <div className='ta-text-bullet-container'>
+                <div className='ta-each-cat-container-long'>
+                  <h4>Nice-To-Haves:</h4>
+                  <div className='ta-text-bullet-container'>
                     {searchResult.nice.map((item, index) => (
                       <div className='ta-text-bullet-each' key={index}>
                         <GoDotFill size={20}/>
-                      < span>{item}</span>
+                        <span>{item}</span>
                       </div>
                     ))}
+                  </div>
+                </div>
+                <div className='ta-each-cat-container'>
+                  <h4>End Date:</h4>
+                  {editMode ? (
+                    <input value={endDate} onChange={(e) => setEndDate(e.target.value)} className='ta-update-input'/>
+                  ) : (
+                    <span>{searchResult.endDate}</span>
+                  )}
                 </div>
               </div>
-              <div className='ta-each-cat-container'>
-                <h4>End Date:</h4>
-                {editMode? 
-                <input value={endDate} onChange={(e) => setEndDate(e.target.value)} className='ta-update-input'/>
-                : 
-                <span>{searchResult.endDate}</span>
-                }
-              </div>
             </div>
-            </div>
-            
-          ) : null}
+          )}
         </div>
       </div>
       <Applicant />

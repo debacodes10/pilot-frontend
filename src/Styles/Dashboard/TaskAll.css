@@ -42,6 +42,8 @@
         column-gap: 12px;
         margin: 12px;
         padding: 8px 8px;
+        border: 1px solid #BBB;
+        border-radius: 12px;
     }
 
     .ta-search-task-container {

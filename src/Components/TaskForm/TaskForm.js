@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "./../../Styles/TaskForm/TaskForm.css";
-import DateTime from 'react-datetime'
+import DateTime from 'react-datetime';
 
 const TaskForm = () => {
     const [name, setName] = useState("");
@@ -12,10 +12,11 @@ const TaskForm = () => {
     const [domain, setDomain] = useState("");
     const [skills, setSkills] = useState([""]);
     const [stipend, setStipend] = useState("");
-    const [helpLinks, setHelpLinks] = useState("");
+    const [helpLinks, setHelpLinks] = useState([""]);
     const [nice, setNice] = useState([""]);
     const [endDate, setEndDate] = useState(new Date());
     const [category, setCategory] = useState("")
+    const [shortDesc, setShortDesc] = useState("")
 
     useEffect(() => {
         if (companyId) {
@@ -55,6 +56,7 @@ const TaskForm = () => {
             helpLinks: helpLinks,
             nice: nice,
             endDate: endDate,
+            shortDesc: shortDesc
         };
 
         fetch('http://localhost:3005/api/tasks', {
@@ -94,6 +96,16 @@ const TaskForm = () => {
 
     const addNiceInput = () => {
         setNice([...nice, ""]);
+    };
+
+    const handleHelpLinkChange = (index, value) => {
+        const newHelpLinks = [...helpLinks];
+        newHelpLinks[index] = value;
+        setHelpLinks(newHelpLinks);
+    };
+
+    const addHelpLinkInput = () => {
+        setHelpLinks([...helpLinks, ""]);
     };
 
     return (
@@ -167,6 +179,14 @@ const TaskForm = () => {
                     />
                 </label>
                 <label>
+                    <h4 className='tf-input-title'>Certificate Description: </h4>
+                    <textarea 
+                        value={shortDesc} 
+                        onChange={(e) => setShortDesc(e.target.value)} 
+                        required 
+                    />
+                </label>
+                <label>
                     <h4 className='tf-input-title'>Domain:</h4>
                     <input 
                         type="text" 
@@ -200,11 +220,17 @@ const TaskForm = () => {
                 </label>
                 <label>
                     <h4 className='tf-input-title'>Help Links:</h4>
-                    <input 
-                        type="text" 
-                        value={helpLinks} 
-                        onChange={(e) => setHelpLinks(e.target.value)} 
-                    />
+                    <div className='tf-dynamic-input'>
+                    {helpLinks.map((link, index) => (
+                            <input 
+                                key={index}
+                                type="text"
+                                value={link}
+                                onChange={(e) => handleHelpLinkChange(index, e.target.value)}
+                            />
+                    ))}
+                    <button className="tf-add-btn" type="button" onClick={addHelpLinkInput}>Add</button>
+                    </div>
                 </label>
                 <label>
                     <h4 className='tf-input-title'>Nice-To-Haves:</h4>
