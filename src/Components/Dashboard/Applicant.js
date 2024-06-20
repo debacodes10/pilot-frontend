@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import "./../../Styles/Dashboard/Applicant.css";
 import { FaSearch } from "react-icons/fa";
 import { FaDownload } from "react-icons/fa6";
+import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 
 const Applicant = () => {
@@ -75,10 +76,19 @@ const Applicant = () => {
     };
 
     const handleDownload = () => {
-        const headers = "Object ID,Drive Link\n";
-        const csvContent = taskApplications.map(taskApplicant => `${taskApplicant._id},${taskApplicant.driveLink}`).join("\n");
-        const blob = new Blob([headers + csvContent], { type: 'text/csv;charset=utf-8;' });
-        FileSaver.saveAs(blob, 'task_applications.csv');
+        const worksheetData = taskApplications.map(taskApplicant => ({
+            'Object ID': taskApplicant._id,
+            'Drive Link': taskApplicant.driveLink,
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Task Applications');
+
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+
+        FileSaver.saveAs(blob, 'task_applications.xlsx');
     };
 
     return (
