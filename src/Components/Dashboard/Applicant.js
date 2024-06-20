@@ -80,6 +80,7 @@ const Applicant = () => {
             'Object ID': taskApplicant._id,
             'Drive Link': taskApplicant.driveLink,
         }));
+        
         const worksheet = XLSX.utils.json_to_sheet(worksheetData);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, 'Task Applications');
