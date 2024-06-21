@@ -188,12 +188,17 @@ const TaskForm = () => {
                 </label>
                 <label>
                     <h4 className='tf-input-title'>Domain:</h4>
-                    <input 
-                        type="text" 
-                        value={domain} 
-                        onChange={(e) => setDomain(e.target.value)} 
-                        required 
-                    />
+                    <select value={domain} onChange={(e)=>{setDomain(e.target.value)}} required
+                        className='tf-select-category'>
+                        <option value="" disabled>Select a domain</option>
+                        <option value="Web Development">Web Development</option>
+                        <option value="Mobile App Development">Mobile App Development</option>
+                        <option value="Game Development">Game Development</option>
+                        <option value="Software Engineering">Software Engineering</option>
+                        <option value="Data Science">Data Science</option>
+                        <option value="Machine Learning">Machine Learning</option>
+                        <option value="Natural Language Processing">Natural Language Processing</option>
+                    </select>
                 </label>
                 <label>
                     <h4 className='tf-input-title'>Skills:</h4>
